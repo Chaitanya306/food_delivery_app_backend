@@ -60,15 +60,21 @@ const Signin=async(req,res)=>{
     }
 }
 
-const Home=async (req,res)=>{
-    const userId=req.userId
-    const user=await User.findOne({_id:userId})
-    const {name,email,number}=user
-    const cart=await Cart.findOne({userId:user._id}) || {arrayOfItems:[]}
-    const orders=await Order.find({userId:user._id}) || []
-    const modifiedOrders=orders.map(order=>({arrayOfItems:order.arrayOfItems,createdAt:order.createdAt}))
-    const fooditems=await Fooditem.find({}) 
-    res.status(200).json({userDetails:{name,email,number},cart:{arrayOfItems:cart.arrayOfItems},orders:modifiedOrders,fooditems:fooditems})
+const Home = async (req, res) => {
+
+    const userId = req.userId
+
+    try {
+        const user = await User.findOne({ _id: userId })
+        const { name, email, number } = user
+        const cart = await Cart.findOne({ userId: user._id }) || { arrayOfItems: [] }
+        const orders = await Order.find({ userId: user._id }) || []
+        const modifiedOrders = orders.map(order => ({ arrayOfItems: order.arrayOfItems, createdAt: order.createdAt }))
+        const fooditems = await Fooditem.find({})
+        res.status(200).json({ userDetails: { name, email, number }, cart: { arrayOfItems: cart.arrayOfItems }, orders: modifiedOrders, fooditems: fooditems })
+    } catch (error) {
+        res.status(500).json({error:'Internal server error'})
+    }
 }
 
 
