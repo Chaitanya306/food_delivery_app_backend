@@ -5,6 +5,7 @@ import Auth from './Auth.js'
 
 const router= express.Router()
 
+router.get('/',(req,res)=> res.status(200).json({message:'Welcome to Food app server'}))
 router.post('/foodOrder/createUser',Signup)
 router.post('/foodOrder/login',Signin)
 router.get('/foodOrder/',Auth,Home)
