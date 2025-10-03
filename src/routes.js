@@ -70,6 +70,7 @@ const Home = async (req, res) => {
         const cart = await Cart.findOne({ userId: user._id }) || { arrayOfItems: [] }
         const orders = await Order.find({ userId: user._id }) || []
         const modifiedOrders = orders.map(order => ({ arrayOfItems: order.arrayOfItems, createdAt: order.createdAt }))
+        modifiedOrders.reverse()
         const fooditems = await Fooditem.find({})
         res.status(200).json({ userDetails: { name, email, number }, cart: { arrayOfItems: cart.arrayOfItems }, orders: modifiedOrders, fooditems: fooditems })
     } catch (error) {
